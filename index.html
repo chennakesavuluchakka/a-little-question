@@ -5,15 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fff5f3">
   <meta name="description" content="A little question, just for you.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="A little question for you 💌">
+  <meta property="og:description" content="Open it when you have a minute ♡">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
   <title>A Little Question for You 💌</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="ambient ambient-one"></div>
   <div class="ambient ambient-two"></div>
+  <div class="floaters" aria-hidden="true"></div>
   <main class="site-shell">
     <section class="screen active" id="welcome" aria-labelledby="welcome-title">
       <div class="eyebrow"><span class="sparkle">✦</span> A tiny surprise <span class="sparkle">✦</span></div>
@@ -27,7 +33,7 @@
         </div>
         <span class="tiny-heart heart-a">♡</span><span class="tiny-heart heart-b">✧</span>
       </div>
-      <p class="kicker">Pssst... you!</p>
+      <p class="kicker" id="greet-kicker">Pssst... you!</p>
       <h1 id="welcome-title">I have a little<br><em>something</em> for you.</h1>
       <p class="intro">Nothing too serious. Just a small surprise that might make you smile. ☺</p>
       <button class="button button-primary" id="open-surprise">Open your surprise <span>→</span></button>
@@ -38,7 +44,7 @@
       <div class="eyebrow"><span class="sparkle">✦</span> A note from me <span class="sparkle">✦</span></div>
       <div class="note-card">
         <div class="note-stamp">♥</div>
-        <p class="handwritten">Dear you,</p>
+        <p class="handwritten" id="dear-line">Dear you,</p>
         <h2 id="note-title">Some people make an ordinary day feel a little more lovely.</h2>
         <p class="note-copy">And lately, you've been doing that without even trying. So I thought I'd be brave, skip the overthinking, and ask you something...</p>
         <div class="note-signoff">With a hopeful smile, <span>someone who'd like to know you better ♡</span></div>
@@ -48,8 +54,9 @@
     </section>
 
     <section class="screen question-screen" id="question" aria-labelledby="question-title">
+      <div class="confetti" id="question-rain" aria-hidden="true"></div>
       <div class="eyebrow"><span class="sparkle">✦</span> Here goes nothing <span class="sparkle">✦</span></div>
-      <div class="big-heart" aria-hidden="true">♡</div>
+      <div class="big-heart" id="mood-face" aria-hidden="true">♡</div>
       <p class="kicker">So, here's my question...</p>
       <h1 id="question-title">Would you go on a<br><em>first date</em> with me?</h1>
       <p class="intro">I'd really love to spend some time with you. No pressure — just good company and hopefully lots of laughs.</p>
@@ -58,27 +65,53 @@
         <button class="button button-soft" id="say-maybe">Maybe? 🙈</button>
       </div>
       <p class="micro-note" id="maybe-message" aria-live="polite">Either answer is okay. I'm glad I got to ask. ♡</p>
+      <div class="maybe-panel" id="maybe-panel" aria-live="polite" hidden>
+        <div class="grump-row" aria-hidden="true"><span>😤</span><span>😒</span><span>🥺</span></div>
+        <p class="grumpy-line">Hmph… a <em>maybe?</em></p>
+        <p class="grumpy-sub">Okay fine. I'll wait. Patiently. Mostly. 🙄<br>(No pressure, really ♡)</p>
+        <a class="button button-soft whatsapp-button" id="maybe-whatsapp" target="_blank" rel="noopener">Send my maybe on WhatsApp 💬</a>
+      </div>
       <button class="text-button back-button" data-back="note">One more look at the note</button>
     </section>
 
     <section class="screen invitation-screen" id="invitation" aria-labelledby="invitation-title">
       <div class="confetti" aria-hidden="true"></div>
       <div class="eyebrow"><span class="sparkle">✦</span> It's a date! <span class="sparkle">✦</span></div>
-      <div class="celebrate-heart" aria-hidden="true">♥</div>
+      <div class="love-burst" aria-hidden="true"><span>😍</span><span>💖</span><span>🥰</span></div>
       <p class="kicker">Well, this just made my day.</p>
       <h1 id="invitation-title">Our first date<br><em>starts here.</em></h1>
       <div class="invite-card">
         <div class="invite-top"><span>✿</span><span>A LITTLE INVITATION</span><span>✿</span></div>
         <h2>I'd love to take you out.</h2>
-        <p>One lovely date, two people, and a chance to make a new memory.</p>
+        <p>One lovely day, two people, and a chance to make a new memory.</p>
+
         <div class="invite-details">
-          <div><span class="detail-icon">☕</span><span><b>The plan</b><small>Something delicious + good conversation</small></span></div>
-          <div><span class="detail-icon">📅</span><span><b>The when</b><small>Let's pick a day that works for both of us</small></span></div>
-          <div><span class="detail-icon">📍</span><span><b>The where</b><small>We'll choose a place together</small></span></div>
+          <div>
+            <span class="detail-icon">📅</span>
+            <span><b>The when</b>
+              <!-- The date comes from CONFIG.dateText at the top of js/script.js -->
+              <small><span id="date-text">[Add your date]</span> · 10:00 AM IST</small>
+            </span>
+          </div>
+          <div>
+            <span class="detail-icon">🚗</span>
+            <span><b>The pickup</b><small>I'll pick you up from your place</small></span>
+          </div>
         </div>
+
+        <p class="plan-label">The plan</p>
+        <ol class="plan-list">
+          <li><span class="detail-icon">🛕</span><span><b>Temple visit</b><small>A calm, lovely start to the day</small></span></li>
+          <li><span class="detail-icon">🎬</span><span><b>A movie</b><small>Popcorn is on me</small></span></li>
+          <li><span class="detail-icon">🍽️</span><span><b>Lunch</b><small>Something delicious + good conversation</small></span></li>
+          <li class="open-end"><span class="detail-icon">✨</span><span><b>And then…?</b><small>We'll see where the day takes us</small></span></li>
+        </ol>
+
+        <p class="countdown" id="countdown" aria-live="polite" hidden></p>
         <div class="invite-footer">Can't wait to see you. <span>♡</span></div>
       </div>
-      <a class="button button-primary message-button" id="message-link" href="#">Let's plan it ♥</a>
+      <a class="button button-primary message-button whatsapp-button" id="message-link" target="_blank" rel="noopener">Send my yes on WhatsApp 💬</a>
+      <a class="button button-soft calendar-button" id="calendar-link" target="_blank" rel="noopener" hidden>Add it to my calendar 📅</a>
       <p class="micro-note">P.S. You bring yourself. I'll bring the smiles.</p>
     </section>
 

@@ -15,7 +15,7 @@ Open `index.html` in your browser.
 
 ## Personalize before publishing
 - Edit the note and wording in `index.html`.
-- In `js/script.js`, set `contactLink` to a WhatsApp link or other contact URL if you want the “Let's plan it” button to open a direct conversation. If left empty, it opens a prefilled email draft.
+- The “Let's plan it” button stays on the page and displays a confirmation; it does not open email or another app.
 - You can change colors and typography in `css/style.css`.
 
 ## Notes
